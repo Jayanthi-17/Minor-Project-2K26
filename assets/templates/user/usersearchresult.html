@@ -65,26 +65,35 @@
             <div class="intro-para text-center quote">
                <h1 align="center">file data</h1>
 
-                                         <table border="2px solid red" align="center">
-                                             <tr>
-                                             <td>no</td>
-                                             <td>file name</td>
-                                             <td>file type</td>
-                                             <td>weight</td>
-                                                 </tr>
-                                                  {% for x in object %}
-                                             <tr><td>  {{ x.id }}</td>
-                                             <td> {{ x.filename }}</td>
-                                             <td> {{ x.filetype }}</td>
-                                                 <td class="cta" > <a href="/weight/?file={{ x.file }}&filetype={{ x.filename }}"><span>weight</span></a></td>
+                                         <h1 align="center">File Data</h1>
 
+<h1 align="center">File Data</h1>
 
-                                             {% endfor %}
-                                             </tr>
+<h3 align="center">Total Results: {{ data|length }}</h3>
 
+<table border="2" align="center" cellpadding="10">
+    <tr>
+        <th>No</th>
+        <th>File Name</th>
+        <th>File Type</th>
+        <th>Weight</th>
+        <th>Download</th>
+    </tr>
 
-
-                                         </table>
+    {% for x in data %}
+    <tr>
+        <td>{{ x.id }}</td>
+        <td>{{ x.filename }}</td>
+        <td>{{ x.filetype }}</td>
+        <td>
+            <a href="/weight/?file={{ x.file }}">Check</a>
+        </td>
+        <td>
+            <a href="{{ x.file.url }}">Download</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
         </p>
             </div>
 
@@ -93,6 +102,6 @@
         </div>
       </div>
     </div>
-  </div>-->
+  </div>
 
 {% endblock %}

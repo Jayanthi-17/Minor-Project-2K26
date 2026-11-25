@@ -65,27 +65,31 @@
             <div class="intro-para text-center quote">
                <h1 align="center">file data</h1>
 
-                                         <table border="2px solid red" align="center">
-                                             <tr>
-                                             <td>no</td>
-                                             <td>file name</td>
-                                             <td>weight</td>
-                                             <td>download</td>
-                                                 </tr>
-                                                  {% for x in qs %}
-                                             <tr><td>  {{ x.id }}</td>
-                                             <td> {{ x.filename }}</td>
-                                             <td> {{ x.weight }}</td>
-                                             <td style="color:brown"><a href="{{x.file.url }}" class="btn btn-primary btn-sm" target="_blank">Download</a></td>
+                                         <h1 align="center">Search Results</h1>
 
+<h3 align="center">Total Results: {{ qs|length }}</h3>
 
+<table border="2" align="center" cellpadding="10">
+    <tr>
+        <th>No</th>
+        <th>File Name</th>
+        <th>Weight</th>
+        <th>Rank</th>
+        <th>Download</th>
+    </tr>
 
-                                             {% endfor %}
-                                             </tr>
-
-
-
-                                         </table>
+    {% for x in qs %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ x.filename }}</td>
+        <td>{{ x.weight }}</td>
+        <td>{{ x.rank }}</td>
+        <td>
+            <a href="/media/{{ x.file }}">Download</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
         </p>
             </div>s
             </a>

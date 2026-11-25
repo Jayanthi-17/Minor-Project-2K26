@@ -221,12 +221,17 @@ def pagerank(request):
 def search1(request):
     return render(request,'user/search1.html')
 
+from django.db.models import Q
+
 def usersearchresult1(request):
     if request.method == 'GET':
-        name=request.GET.get('filename')
-        print('name:',name)
-        chk=weightmodel.objects.filter(filename=name)
-        print("chk:",chk)
-        return render(request,'user/userdisplay.html',{"qs":chk})
+        query = request.GET.get('filename')
+        print('query:', query)
+
+        results = weightmodel.objects.filter(
+            Q(filename__icontains=query)
+        ).order_by('-weight')   # ranking by ML weight
+
+        return render(request, 'user/userdisplay.html', {"qs": results})
 
 
