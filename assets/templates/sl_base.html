@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}SearchLens{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
+  <link rel="stylesheet" href="{% static 'css/searchlens.css' %}">
+</head>
+<body class="sl">
+  <canvas id="sl-bg"></canvas>
+
+  <nav class="sl-nav">
+    <div class="sl-wrap">
+      <a class="sl-logo" href="{% url 'index' %}">Search<b>Lens</b></a>
+      <button class="sl-burger" id="sl-burger" aria-label="Menu">&#9776;</button>
+      <div class="sl-links" id="sl-links">
+        <a href="{% url 'index' %}">Home</a>
+        <a href="{% url 'search1' %}">Search</a>
+        <a href="{% url 'userlogin' %}">User</a>
+        <a href="{% url 'managerlogin' %}">Manager</a>
+        <a href="{% url 'admin1' %}">Admin</a>
+        <button class="sl-theme" id="sl-theme" title="Switch light / dark">&#9680;</button>
+      </div>
+    </div>
+  </nav>
+
+  {% block contents %}{% endblock %}
+
+  <div class="sl-foot">SearchLens &middot; ML-ranked search &middot; Django + scikit-learn + XGBoost</div>
+  <script src="{% static 'js/searchlens.js' %}"></script>
+</body>
+</html>

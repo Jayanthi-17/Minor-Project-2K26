@@ -1,102 +1,67 @@
-{% extends 'userbase.html' %}
-{% load static %}
-
+{% extends 'sl_base.html' %}
+{% block title %}Results - SearchLens{% endblock %}
 {% block contents %}
+<div class="sl-wrap">
+  <div class="sl-resbar">
+    <form class="sl-search" method="get" action="{% url 'usersearchresult1' %}">
+      <span>&#128269;</span>
+      <input type="text" name="filename" placeholder="Search documents..." autocomplete="off" required>
+      <span class="sl-kbd">/</span>
+      <button class="sl-btn" type="submit">Search</button>
+    </form>
+  </div>
 
-<div class="modal fade" id="login" role="dialog">
-    <div class="modal-dialog modal-sm">
-
-      <!-- Modal content no 1-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title text-center form-title">Login</h4>
-        </div>
-        <div class="modal-body padtrbl">
-
-          <div class="login-box-body">
-            <p class="login-box-msg">Sign in to start your session</p>
-            <div class="form-group">
-              <form name="" id="loginForm">
-                <div class="form-group has-feedback">
-                  <!----- username -------------->
-                  <input class="form-control" placeholder="Username" id="loginid" type="text" autocomplete="off" />
-                  <span style="display:none;font-weight:bold; position:absolute;color: red;position: absolute;padding:4px;font-size: 11px;background-color:rgba(128, 128, 128, 0.26);z-index: 17;  right: 27px; top: 5px;" id="span_loginid"></span>
-                  <!---Alredy exists  ! -->
-                  <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                </div>
-                <div class="form-group has-feedback">
-                  <!----- password -------------->
-                  <input class="form-control" placeholder="Password" id="loginpsw" type="password" autocomplete="off" />
-                  <span style="display:none;font-weight:bold; position:absolute;color: grey;position: absolute;padding:4px;font-size: 11px;background-color:rgba(128, 128, 128, 0.26);z-index: 17;  right: 27px; top: 5px;" id="span_loginpsw"></span>
-                  <!---Alredy exists  ! -->
-                  <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                </div>
-                <div class="row">
-                  <div class="col-xs-12">
-                    <div class="checkbox icheck">
-                      <label>
-                                <input type="checkbox" id="loginrem" > Remember Me
-                              </label>
-                    </div>
-                  </div>
-                  <div class="col-xs-12">
-                    <button type="button" class="btn btn-green btn-block btn-flat" onclick="userlogin()">Sign In</button>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-
+  {% if qs %}
+  <div class="sl-toolbar">
+    <div class="sl-count"><b id="sl-shown">{{ qs|length }}</b> of {{ qs|length }} results</div>
+    <div class="sl-tools">
+      <button class="sl-tab on" data-sort="weight">Best match</button>
+      <button class="sl-tab" data-sort="name">A &ndash; Z</button>
+      <input class="sl-filter" id="sl-filter" placeholder="Filter results...">
     </div>
   </div>
-  <!--/ Modal box-->
-  <!--Banner-->
-  <div class="banner">
-    <div class="bg-color">
-      <div class="container">
-        <div class="row">
-          <div class="banner-text text-center">
-            <div class="text-border">
-              <!--<h2 class="text-dec"></h2>-->
-            </div>
-            <div class="intro-para text-center quote">
-               <h1 align="center">file data</h1>
 
-                                         <h1 align="center">Search Results</h1>
-
-<h3 align="center">Total Results: {{ qs|length }}</h3>
-
-<table border="2" align="center" cellpadding="10">
-    <tr>
-        <th>No</th>
-        <th>File Name</th>
-        <th>Weight</th>
-        <th>Rank</th>
-        <th>Download</th>
-    </tr>
-
+  <div class="sl-list" id="sl-list">
     {% for x in qs %}
-    <tr>
-        <td>{{ forloop.counter }}</td>
-        <td>{{ x.filename }}</td>
-        <td>{{ x.weight }}</td>
-        <td>{{ x.rank }}</td>
-        <td>
-            <a href="/media/{{ x.file }}">Download</a>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
-        </p>
-            </div>s
-            </a>
-          </div>
-        </div>
+    <article class="sl-card" data-weight="{{ x.weight }}" data-score="{{ x.score }}" data-name="{{ x.filename }}">
+      <div class="sl-top">
+        <div class="sl-num">{{ forloop.counter }}</div>
+        <div class="sl-title">{{ x.filename }}</div>
       </div>
-    </div>
-  </div>-->
-
+      <div class="sl-meta">
+        <span class="sl-tag">Rank tier {{ x.rank }}</span>
+        {% if x.label == "1" %}<span class="sl-tag good">Relevant</span>{% else %}<span class="sl-tag">Low weight</span>{% endif %}
+        <span class="sl-tag">Match score {{ x.score }}</span>
+        <span class="sl-tag">ML weight {{ x.weight|floatformat:1 }}</span>
+      </div>
+      {% if x.snippet %}<p class="sl-snip">{{ x.snippet }}</p>{% endif %}
+      <div class="sl-bar"><i></i></div>
+      <div class="sl-actions">
+        <button type="button" class="sl-why">Why this rank?</button>
+        <a href="/media/{{ x.file }}">Download</a>
+      </div>
+      <div class="sl-detail">
+        <b>How this result was ranked</b>
+        <ul>
+          <li><b>Match score {{ x.score }}</b>: how often your words appear in the document text, plus a bonus when they appear in the file name.</li>
+          <li><b>ML weight {{ x.weight|floatformat:1 }}</b>: the LDA topic-model weight from the upload step. It breaks ties between equal matches.</li>
+          <li>This result is <b class="sl-pct"></b> as strong as the top match in this list.</li>
+          <li>The weight falls in rank tier <b>{{ x.rank }}</b> (1 is highest, 5 is lowest).</li>
+        </ul>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="sl-empty">
+    {% if indexed_count == 0 %}
+    <h2>No documents are indexed yet</h2>
+    <p>Upload a file as Manager (it is indexed automatically), or run <code>python manage.py index_uploads</code> to index files that were already uploaded.</p>
+    {% else %}
+    <h2>No results for &ldquo;{{ query }}&rdquo;</h2>
+    <p>{{ indexed_count }} document(s) searched. Try a shorter or different keyword.</p>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
 {% endblock %}

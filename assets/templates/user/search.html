@@ -1,44 +1,17 @@
-{% extends 'base.html' %}
+{% extends 'sl_base.html' %}
+{% block title %}Search - SearchLens{% endblock %}
 {% block contents %}
-
-<div class="search-container">
-    <h1 class="logo" style="color:black;">Datapoint Search</h1>
-
-    <form action="{% url 'usersearchresult1' %}" method="GET">
-        <input type="text" name="filename" placeholder="Search anything..." class="search-box" required>
-        <br><br>
-        <button type="submit">Search</button>
+<div class="sl-wrap">
+  <section class="sl-hero" style="padding-top:70px">
+    <h1>Search <span class="sl-grad">anything</span></h1>
+    <p>Enter a keyword to find matching documents.</p>
+    <form class="sl-search" method="get" action="{% url 'usersearchresult1' %}">
+      <span>&#128269;</span>
+      <input type="text" name="filename" placeholder="Search documents..." autocomplete="off" required autofocus>
+      <span class="sl-kbd">/</span>
+      <button class="sl-btn" type="submit">Search</button>
     </form>
+    <div class="sl-chips" id="sl-recent" data-url="{% url 'usersearchresult1' %}"></div>
+  </section>
 </div>
-
-<style>
-.search-container {
-    text-align: center;
-    margin-top: 150px;
-}
-
-.logo {
-    font-size: 40px;
-    margin-bottom: 20px;
-    color: black;  /* ADD THIS */
-}
-
-.search-box {
-    width: 50%;
-    padding: 15px;
-    border-radius: 30px;
-    border: 2px solid #5fcf80;
-    font-size: 18px;
-}
-
-button {
-    padding: 10px 25px;
-    border-radius: 20px;
-    background-color: #5fcf80;
-    color: white;
-    border: none;
-    font-size: 16px;
-}
-</style>
-
 {% endblock %}

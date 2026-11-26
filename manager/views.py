@@ -62,18 +62,18 @@ def managerlogincheck(request):
 
 
 def fileupload(request):
-    if request.method =='POST':
-        form = UploadfileForm(request.POST,request.FILES)
+    if request.method == 'POST':
+        form = UploadfileForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            return render(request,'manager/uploadfile.html')
+            upload = form.save()
+            # NEW: calculate the ML weight right away so the file is searchable
+            try:
+                from user.ranking import index_document
+                index_document(upload)
+                print("indexed:", upload.filename)
+            except Exception as e:
+                print("could not index file:", e)
+            return render(request, 'manager/uploadfile.html')
     else:
-        form=UploadfileForm()
-    return render(request, 'manager/uploadfile.html',{'form':form})
-
-
-
-
-
-
-
+        form = UploadfileForm()
+    return render(request, 'manager/uploadfile.html', {'form': form})
