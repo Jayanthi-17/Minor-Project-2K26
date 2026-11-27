@@ -101,3 +101,69 @@ body.sl a{color:var(--accent);text-decoration:none}
 .sl-snip{margin:12px 0 14px;color:var(--muted);font-size:14.5px;line-height:1.6}
 .sl-snip mark{background:color-mix(in srgb,var(--warn) 35%,transparent);color:var(--text);border-radius:4px;padding:0 2px}
 .sl-empty code{background:var(--card);border:1px solid var(--card-b);padding:2px 8px;border-radius:6px;color:var(--text)}
+
+/* ===== step 3: portals, auth, forms, tables ===== */
+.sl-role{margin-left:8px;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;vertical-align:middle;letter-spacing:.02em}
+.sl-links a.on{color:var(--text)!important;background:var(--card)}
+.sl-h2{font-size:24px;letter-spacing:-.02em;margin:10px 0 18px;text-align:center}
+a.sl-feature{color:inherit!important;display:block}
+
+.sl-portals{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:40px}
+.sl-portal{display:block;background:var(--card);border:1px solid var(--card-b);border-radius:20px;padding:26px;color:inherit!important;transition:transform .2s,border-color .2s,box-shadow .2s}
+.sl-portal:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:var(--shadow)}
+.sl-portal .ic{font-size:30px;margin-bottom:12px}
+.sl-portal h3{margin:0 0 6px;font-size:18px}
+.sl-portal p{margin:0 0 14px;color:var(--muted);font-size:14px}
+.sl-portal span{color:var(--accent);font-weight:700;font-size:14px}
+
+.sl-auth-wrap{display:flex;justify-content:center;padding:50px 20px 80px}
+.sl-auth{width:100%;max-width:440px;background:var(--card);border:1px solid var(--card-b);border-radius:24px;padding:34px 30px;box-shadow:var(--shadow);backdrop-filter:blur(10px);animation:sl-in .4s both}
+.sl-auth.sl-wide{max-width:540px}
+.sl-auth-ic{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;font-size:26px;margin:0 auto 14px;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+.sl-auth h1{margin:0;text-align:center;font-size:26px;letter-spacing:-.02em}
+.sl-sub{text-align:center;color:var(--muted);margin:6px 0 22px;font-size:15px}
+.sl-form{display:flex;flex-direction:column;gap:14px}
+.sl-form label{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:var(--muted)}
+.sl-form input[type=text],.sl-form input[type=email],.sl-form input[type=password],.sl-form input[type=tel],.sl-form input:not([type]){background:var(--bg);color:var(--text);border:1px solid var(--card-b);border-radius:12px;padding:13px 14px;font-size:15px;outline:0;width:100%;font-family:inherit;transition:border-color .2s,box-shadow .2s}
+.sl-form input:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+.sl-block{width:100%;margin-top:4px;display:block}
+.sl-btn.loading{opacity:.7;pointer-events:none}
+.sl-alt{text-align:center;margin:18px 0 0;color:var(--muted);font-size:14px}
+.sl-note{text-align:center;margin:10px 0 0;color:var(--muted);font-size:12px}
+.sl-alert{background:color-mix(in srgb,#f87171 14%,transparent);border:1px solid color-mix(in srgb,#f87171 45%,transparent);color:var(--text);padding:11px 14px;border-radius:12px;font-size:14px;margin-bottom:16px}
+.sl-alert.ok{background:color-mix(in srgb,var(--ok) 14%,transparent);border-color:color-mix(in srgb,var(--ok) 45%,transparent)}
+
+.sl-pw{position:relative}
+.sl-pw input{padding-right:48px!important}
+.sl-eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--muted);cursor:pointer;padding:8px;font-size:16px}
+.sl-strength{height:6px;border-radius:99px;background:var(--card-b);position:relative;margin-top:-6px}
+.sl-strength i{display:block;height:100%;width:0;border-radius:99px;transition:width .3s,background .3s}
+.sl-strength small,.sl-match{font-size:12px;color:var(--muted)}
+.sl-strength small{position:absolute;right:0;top:10px}
+.sl-match.bad{color:#f87171}.sl-match.good{color:var(--ok)}
+
+.sl-drop{position:relative;border:2px dashed var(--card-b);border-radius:18px;padding:28px 16px;text-align:center;display:flex;flex-direction:column;gap:4px;align-items:center;transition:border-color .2s,background .2s;cursor:pointer}
+.sl-drop:hover,.sl-drop.over{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent)}
+.sl-drop .ic{font-size:34px}
+.sl-drop span{color:var(--muted);font-size:13px}
+.sl-drop input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.sl-picked{margin-top:8px;font-weight:700;color:var(--ok);font-size:14px;word-break:break-all}
+
+.sl-tablewrap{overflow-x:auto;background:var(--card);border:1px solid var(--card-b);border-radius:18px;margin-bottom:80px}
+.sl-table{width:100%;border-collapse:collapse;font-size:14px}
+.sl-table th{text-align:left;color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.05em;padding:14px 16px;border-bottom:1px solid var(--card-b)}
+.sl-table td{padding:14px 16px;border-bottom:1px solid var(--card-b)}
+.sl-table tr:last-child td{border-bottom:0}
+.sl-table tbody tr:hover{background:color-mix(in srgb,var(--accent) 7%,transparent)}
+.sl-none{text-align:center;color:var(--muted);padding:40px!important}
+.sl-badge{font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;border:1px solid}
+.sl-badge.good{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 50%,transparent)}
+.sl-badge.warn{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 50%,transparent)}
+.sl-mini{background:var(--accent);color:#fff!important;padding:6px 14px;border-radius:9px;font-size:13px;font-weight:700}
+
+.sl-panel{background:var(--card);border:1px solid var(--card-b);border-radius:18px;padding:20px 22px;margin-bottom:16px}
+.sl-panel h3{margin:0 0 10px;font-size:16px}
+.sl-pre{margin:0;overflow-x:auto;font:13px/1.6 ui-monospace,Consolas,monospace;color:var(--text)}
+.sl-big{text-align:center;font-size:54px;font-weight:800;letter-spacing:-.03em;margin:6px 0 14px;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sl-meter{height:10px;border-radius:99px;background:var(--card-b);overflow:hidden;margin-bottom:6px}
+.sl-meter i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 1s cubic-bezier(.2,.8,.2,1)}

@@ -146,3 +146,92 @@
   document.getElementById('sl-filter').addEventListener('input', render);
   render();
 })();
+
+/* ===== step 3: forms, upload, tables (separate block so it runs on every page) ===== */
+(function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  /* highlight the current page in the nav */
+  $$('.sl-links a').forEach(function (a) {
+    if (a.getAttribute('href') === location.pathname && location.pathname !== '/') a.classList.add('on');
+  });
+
+  /* placeholders for the Django-generated register fields */
+  var ph = { id_name: 'Your full name', id_email: 'you@example.com', id_mobileno: '10-digit mobile number',
+             id_passwd: 'Create a password', id_cwpasswd: 'Repeat the password' };
+  Object.keys(ph).forEach(function (id) { var e = document.getElementById(id); if (e) e.placeholder = ph[id]; });
+
+  /* only digits in the mobile field */
+  var mob = document.getElementById('id_mobileno');
+  if (mob) { mob.setAttribute('inputmode', 'numeric'); mob.addEventListener('input', function () { mob.value = mob.value.replace(/\D/g, '').slice(0, 10); }); }
+
+  /* show / hide password buttons */
+  $$('.sl-form input[type=password]').forEach(function (inp) {
+    var wrap = document.createElement('div'); wrap.className = 'sl-pw';
+    inp.parentNode.insertBefore(wrap, inp); wrap.appendChild(inp);
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'sl-eye'; b.title = 'Show / hide'; b.innerHTML = '&#128065;';
+    b.onclick = function () { inp.type = inp.type === 'password' ? 'text' : 'password'; };
+    wrap.appendChild(b);
+  });
+
+  /* password strength + match check */
+  var pw = document.getElementById('id_passwd'), cw = document.getElementById('id_cwpasswd'), bar = $('#sl-strength i');
+  if (pw && bar) {
+    var label = $('#sl-strength-text'), match = $('#sl-match');
+    pw.addEventListener('input', function () {
+      var v = pw.value, n = 0;
+      if (v.length >= 8) n++; if (/[A-Z]/.test(v) && /[a-z]/.test(v)) n++; if (/\d/.test(v)) n++; if (/[^A-Za-z0-9]/.test(v)) n++;
+      var cols = ['#f87171', '#fbbf24', '#a3e635', '#34d399'], names = ['Weak', 'Fair', 'Good', 'Strong'];
+      bar.style.width = v ? (n || 1) * 25 + '%' : '0'; bar.style.background = cols[Math.max(n - 1, 0)];
+      label.textContent = v ? names[Math.max(n - 1, 0)] : ''; check();
+    });
+    function check() {
+      if (!cw.value) { match.textContent = ''; cw.setCustomValidity(''); return; }
+      var ok = pw.value === cw.value;
+      match.textContent = ok ? 'Passwords match' : 'Passwords do not match';
+      match.className = 'sl-match ' + (ok ? 'good' : 'bad');
+      cw.setCustomValidity(ok ? '' : 'Passwords do not match');
+    }
+    cw.addEventListener('input', check);
+  }
+
+  /* upload drop zone: fills in name + type automatically */
+  var file = document.getElementById('sl-file');
+  if (file) {
+    var drop = document.getElementById('sl-drop'), picked = document.getElementById('sl-picked');
+    function show() {
+      var f = file.files[0]; if (!f) return;
+      var dot = f.name.lastIndexOf('.'), stem = dot > 0 ? f.name.slice(0, dot) : f.name, ext = dot > 0 ? f.name.slice(dot + 1) : '';
+      var kb = f.size > 1048576 ? (f.size / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(f.size / 1024)) + ' KB';
+      picked.textContent = '\u2713 ' + f.name + ' (' + kb + ')';
+      var n = document.getElementById('sl-fname'), t = document.getElementById('sl-ftype');
+      if (!n.value) n.value = stem; if (!t.value) t.value = ext.toLowerCase();
+    }
+    file.addEventListener('change', show);
+    ['dragenter', 'dragover'].forEach(function (ev) { drop.addEventListener(ev, function () { drop.classList.add('over'); }); });
+    ['dragleave', 'drop'].forEach(function (ev) { drop.addEventListener(ev, function () { drop.classList.remove('over'); }); });
+  }
+
+  /* live table filter */
+  $$('[data-filter-table]').forEach(function (inp) {
+    inp.addEventListener('input', function () {
+      var q = inp.value.toLowerCase();
+      $$('#' + inp.getAttribute('data-filter-table') + ' tbody tr').forEach(function (r) {
+        r.style.display = r.textContent.toLowerCase().indexOf(q) > -1 ? '' : 'none';
+      });
+    });
+  });
+
+  /* accuracy meter */
+  var m = $('.sl-meter[data-value]');
+  if (m) setTimeout(function () { m.firstElementChild.style.width = Math.min(parseFloat(m.getAttribute('data-value')) || 0, 100) + '%'; }, 150);
+
+  /* "Uploading..." state on submit */
+  $$('.sl-form').forEach(function (f) {
+    f.addEventListener('submit', function () {
+      var b = $('button[type=submit]', f); if (!b || !f.checkValidity()) return;
+      setTimeout(function () { b.classList.add('loading'); b.textContent = 'Please wait...'; }, 0);
+    });
+  });
+})();

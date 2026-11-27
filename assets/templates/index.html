@@ -5,7 +5,7 @@
   <section class="sl-hero">
     <span class="sl-pill">&#10024; Search ranked by machine learning</span>
     <h1>Find the most relevant <span class="sl-grad">documents</span>, ranked by ML.</h1>
-    <p>Type a keyword and see results scored by topic weight, with a clear explanation of why each one ranked where it did.</p>
+    <p>Type a keyword and see results scored by relevance, with a clear explanation of why each one ranked where it did.</p>
 
     <form class="sl-search" method="get" action="{% url 'usersearchresult1' %}">
       <span>&#128269;</span>
@@ -13,19 +13,28 @@
       <span class="sl-kbd">/</span>
       <button class="sl-btn" type="submit">Search</button>
     </form>
-
-    <div class="sl-chips">
-      <small>Try:</small>
-      <a class="sl-chip" href="{% url 'usersearchresult1' %}?filename=corona">corona</a>
-      <a class="sl-chip" href="{% url 'usersearchresult1' %}?filename=python">python</a>
-      <a class="sl-chip" href="{% url 'usersearchresult1' %}?filename=hai">hai</a>
-    </div>
     <div class="sl-chips" id="sl-recent" data-url="{% url 'usersearchresult1' %}"></div>
+  </section>
+
+  <h2 class="sl-h2">Choose your portal</h2>
+  <section class="sl-portals">
+    <a class="sl-portal" href="{% url 'userlogin' %}">
+      <div class="ic">&#128100;</div><h3>User portal</h3>
+      <p>Search the library and see why each result ranked where it did.</p><span>Sign in &rarr;</span>
+    </a>
+    <a class="sl-portal" href="{% url 'managerlogin' %}">
+      <div class="ic">&#128194;</div><h3>Manager portal</h3>
+      <p>Upload documents. They are indexed and ready to search straight away.</p><span>Sign in &rarr;</span>
+    </a>
+    <a class="sl-portal" href="{% url 'admin1' %}">
+      <div class="ic">&#128737;</div><h3>Admin portal</h3>
+      <p>Approve accounts and compare SVM and XGBoost model accuracy.</p><span>Sign in &rarr;</span>
+    </a>
   </section>
 
   <section class="sl-features">
     <div class="sl-feature"><div class="ic">&#129302;</div><h3>ML-based ranking</h3><p>Documents are scored with LDA topic modelling on top of TF-IDF features.</p></div>
-    <div class="sl-feature"><div class="ic">&#128269;</div><h3>Explainable results</h3><p>Open "Why this rank?" on any result to see its weight, rank tier and relevance label.</p></div>
+    <div class="sl-feature"><div class="ic">&#128269;</div><h3>Explainable results</h3><p>Open "Why this rank?" on any result to see how it was scored.</p></div>
     <div class="sl-feature"><div class="ic">&#9889;</div><h3>Instant sort &amp; filter</h3><p>Re-order or narrow down results in the browser with no page reload.</p></div>
   </section>
 </div>

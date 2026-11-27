@@ -14,14 +14,16 @@
 
   <nav class="sl-nav">
     <div class="sl-wrap">
-      <a class="sl-logo" href="{% url 'index' %}">Search<b>Lens</b></a>
+      <a class="sl-logo" href="{% url 'index' %}">Search<b>Lens</b>{% block role %}{% endblock %}</a>
       <button class="sl-burger" id="sl-burger" aria-label="Menu">&#9776;</button>
       <div class="sl-links" id="sl-links">
+        {% block navlinks %}
         <a href="{% url 'index' %}">Home</a>
         <a href="{% url 'search1' %}">Search</a>
         <a href="{% url 'userlogin' %}">User</a>
         <a href="{% url 'managerlogin' %}">Manager</a>
         <a href="{% url 'admin1' %}">Admin</a>
+        {% endblock %}
         <button class="sl-theme" id="sl-theme" title="Switch light / dark">&#9680;</button>
       </div>
     </div>
